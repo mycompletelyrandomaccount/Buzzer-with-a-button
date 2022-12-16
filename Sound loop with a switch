@@ -1,0 +1,51 @@
+int buttonPin = 12; // the number of the switch pin     
+int buzzerPin = 9; // the number of the buzzer pin     
+bool isBuzzing = false; // define a variable to save the state of buzzer     
+int tempo = 1000; // length of overall sound    
+int length = 3; // number of notes + 1     
+      
+void setup() {     
+pinMode(buttonPin, INPUT); // Set the switch pin into input mode     
+pinMode(buzzerPin, OUTPUT); // Set Buzzer pin into output mode     
+}     
+      
+void loop() {     
+if (digitalRead(buttonPin) == LOW) // if the switch is turned off    
+{     
+delay(10);      
+  if (digitalRead(buttonPin) == LOW) // confirm again if the switch is off    
+  {     
+    toggleBuzzer(); //  refer to the block about toggleBuzzer
+    while (digitalRead(buttonPin) == LOW); // wait for the switch to be turned on 
+    delay(10);      
+  }     
+  {   
+    delay(30);   
+    while (digitalRead(buttonPin)==HIGH)  // once and while the switch remains turned on
+    {     
+      for (int freq=550;freq<700;freq++) // start at frequency of 550, continually increasing until reaching 700. Or do the same if 550 is reached  
+          tone(buzzerPin, freq, 600); // set the length of time for the above frequency to 600  
+        for (int freq=700;freq>550;freq--) // upon reaching a frequency of 700, continually decrease to 550    
+        tone(buzzerPin, freq, 100);  
+    }    
+    digitalWrite(buzzerPin, LOW);   
+    delay(30);   
+  }  
+}        
+}     
+      
+void toggleBuzzer() {     
+  for (int i = 0; i < length; i++)  //  for this block go through it repeatedly increasing the number of i each round starting from 0, once i is the number assigned to int length dont got through loop, instead start again from 0, i++ is what increases the value of i   
+  {     
+    if (isBuzzing == false)  // if the switch is off   
+    {   
+    for (int freq=500;freq<1000;freq++) // start at frequency of 500, continually increasing until reaching 1000
+    tone(buzzerPin, freq, 100);
+    }     
+    else     
+    {     
+    digitalWrite(buzzerPin, LOW);  // turn off buzzer   
+    isBuzzing = false;  // set buzzer state to off   
+    }     
+  }     
+}  
